@@ -1,0 +1,202 @@
+{
+  "client": "Thunder Client",
+  "collectionName": "Almacen - Parte 2 (Complementos)",
+  "dateExported": "2025-07-25T23:59:59.999Z",
+  "version": "1.1",
+  "folders": [],
+  "requests": [
+    {
+      "id": "ignore-alert",
+      "name": "🚨 PUT Ignorar Alerta",
+      "url": "http://localhost:3003/api/alerts/2/ignore",
+      "method": "PUT",
+      "sortNum": 1000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "get-low-stock-products",
+      "name": "📦 GET Productos Bajo Stock",
+      "url": "http://localhost:3003/api/products/low-stock",
+      "method": "GET",
+      "sortNum": 2000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [],
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "get-expiring-products",
+      "name": "📦 GET Productos por Vencer",
+      "url": "http://localhost:3003/api/products/expiring",
+      "method": "GET",
+      "sortNum": 3000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [],
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "get-surplus",
+      "name": "📦 GET Sobrantes",
+      "url": "http://localhost:3003/api/surplus",
+      "method": "GET",
+      "sortNum": 4000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [],
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "get-surplus-stats",
+      "name": "📦 GET Estadísticas Sobrantes",
+      "url": "http://localhost:3003/api/surplus/stats",
+      "method": "GET",
+      "sortNum": 5000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [],
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "get-surplus-report",
+      "name": "📦 GET Reporte Envío Sobrantes",
+      "url": "http://localhost:3003/api/surplus/report",
+      "method": "GET",
+      "sortNum": 6000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [],
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "create-surplus",
+      "name": "📦 POST Crear Sobrante",
+      "url": "http://localhost:3003/api/surplus",
+      "method": "POST",
+      "sortNum": 7000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"producto_id\": 3,\n  \"cantidad\": 8,\n  \"observaciones\": \"Sobrante desde colección parte 2\"\n}"
+      },
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "mark-surplus-sent",
+      "name": "📦 PUT Marcar Sobrante Enviado",
+      "url": "http://localhost:3003/api/surplus/1/sent",
+      "method": "PUT",
+      "sortNum": 8000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "get-withdrawals",
+      "name": "📉 GET Bajas",
+      "url": "http://localhost:3003/api/withdrawals",
+      "method": "GET",
+      "sortNum": 9000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [],
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "get-withdrawal-stats",
+      "name": "📉 GET Estadísticas Bajas",
+      "url": "http://localhost:3003/api/withdrawals/stats",
+      "method": "GET",
+      "sortNum": 10000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [],
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "get-withdrawn-products",
+      "name": "📉 GET Productos Dados de Baja",
+      "url": "http://localhost:3003/api/withdrawals/products",
+      "method": "GET",
+      "sortNum": 11000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [],
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "create-withdrawal",
+      "name": "📉 POST Registrar Baja",
+      "url": "http://localhost:3003/api/withdrawals",
+      "method": "POST",
+      "sortNum": 12000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"producto_id\": 4,\n  \"cantidad_baja\": 3,\n  \"motivo_baja\": \"Producto dañado - Parte 2\",\n  \"usuario\": \"Usuario Parte 2\",\n  \"observaciones\": \"Baja desde colección parte 2\"\n}"
+      },
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "get-dashboard",
+      "name": "📊 GET Dashboard",
+      "url": "http://localhost:3003/api/reports/dashboard",
+      "method": "GET",
+      "sortNum": 13000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [],
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "get-inventory-report",
+      "name": "📊 GET Reporte Inventario",
+      "url": "http://localhost:3003/api/reports/inventory",
+      "method": "GET",
+      "sortNum": 14000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [],
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "get-movements-report",
+      "name": "📊 GET Reporte Movimientos",
+      "url": "http://localhost:3003/api/reports/movements",
+      "method": "GET",
+      "sortNum": 15000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [],
+      "params": [],
+      "tests": []
+    }
+  ]
+}

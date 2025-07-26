@@ -1,0 +1,220 @@
+{
+  "client": "Thunder Client",
+  "collectionName": "Almacen - Parte 1 (Principales)",
+  "dateExported": "2025-07-25T23:59:59.999Z",
+  "version": "1.1",
+  "folders": [],
+  "requests": [
+    {
+      "id": "health-check",
+      "name": "🏥 Health Check",
+      "url": "http://localhost:3003/api/health",
+      "method": "GET",
+      "sortNum": 1000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [],
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "get-all-products",
+      "name": "📦 GET Todos los Productos",
+      "url": "http://localhost:3003/api/products",
+      "method": "GET",
+      "sortNum": 2000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [],
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "get-product-by-id",
+      "name": "📦 GET Producto por ID",
+      "url": "http://localhost:3003/api/products/2",
+      "method": "GET",
+      "sortNum": 3000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [],
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "create-product",
+      "name": "📦 POST Crear Producto",
+      "url": "http://localhost:3003/api/products",
+      "method": "POST",
+      "sortNum": 4000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"codigo_item\": \"PARTE1-001\",\n  \"nombre_item\": \"Producto Parte 1\",\n  \"nombre_marca\": \"TestBrand\",\n  \"nombre_medida\": \"Unidad\",\n  \"mayor\": 25.50,\n  \"sub_cta\": \"P1\",\n  \"stock_actual\": 100,\n  \"fecha_vencimiento\": \"2026-12-31\"\n}"
+      },
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "update-product",
+      "name": "📦 PUT Actualizar Producto",
+      "url": "http://localhost:3003/api/products/2",
+      "method": "PUT",
+      "sortNum": 5000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"nombre_item\": \"Producto Actualizado Parte 1\",\n  \"mayor\": 35.00\n}"
+      },
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "delete-product",
+      "name": "📦 DELETE Eliminar Producto",
+      "url": "http://localhost:3003/api/products/999",
+      "method": "DELETE",
+      "sortNum": 6000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [],
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "get-movements",
+      "name": "🔄 GET Movimientos",
+      "url": "http://localhost:3003/api/movements",
+      "method": "GET",
+      "sortNum": 7000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [],
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "get-movement-stats",
+      "name": "🔄 GET Estadísticas Movimientos",
+      "url": "http://localhost:3003/api/movements/stats",
+      "method": "GET",
+      "sortNum": 8000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [],
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "create-entry",
+      "name": "🔄 POST Registrar Entrada",
+      "url": "http://localhost:3003/api/movements/entry",
+      "method": "POST",
+      "sortNum": 9000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"producto_id\": 2,\n  \"cantidad\": 15,\n  \"usuario\": \"Usuario Parte 1\",\n  \"observaciones\": \"Entrada desde colección parte 1\"\n}"
+      },
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "create-exit",
+      "name": "🔄 POST Registrar Salida",
+      "url": "http://localhost:3003/api/movements/exit",
+      "method": "POST",
+      "sortNum": 10000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"producto_id\": 2,\n  \"cantidad\": 5,\n  \"usuario\": \"Usuario Parte 1\",\n  \"observaciones\": \"Salida desde colección parte 1\"\n}"
+      },
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "get-product-movements",
+      "name": "🔄 GET Movimientos por Producto",
+      "url": "http://localhost:3003/api/movements/product/2",
+      "method": "GET",
+      "sortNum": 11000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [],
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "get-alerts",
+      "name": "🚨 GET Alertas",
+      "url": "http://localhost:3003/api/alerts",
+      "method": "GET",
+      "sortNum": 12000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [],
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "get-alert-stats",
+      "name": "🚨 GET Estadísticas Alertas",
+      "url": "http://localhost:3003/api/alerts/stats",
+      "method": "GET",
+      "sortNum": 13000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [],
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "generate-alerts",
+      "name": "🚨 POST Generar Alertas",
+      "url": "http://localhost:3003/api/alerts/generate",
+      "method": "POST",
+      "sortNum": 14000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "tests": []
+    },
+    {
+      "id": "resolve-alert",
+      "name": "🚨 PUT Resolver Alerta",
+      "url": "http://localhost:3003/api/alerts/2/resolve",
+      "method": "PUT",
+      "sortNum": 15000,
+      "created": "2025-07-25T23:59:59.999Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "tests": []
+    }
+  ]
+}

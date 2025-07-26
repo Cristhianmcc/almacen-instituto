@@ -1,0 +1,43 @@
+{
+  "name": "almacen-instituto",
+  "version": "1.0.0",
+  "description": "Sistema de control de almacén para instituto educativo",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "@supabase/supabase-js": "^2.38.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "joi": "^17.9.2",
+    "helmet": "^7.0.0",
+    "morgan": "^1.10.0",
+    "moment": "^2.29.4",
+    "cron": "^3.1.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "jest": "^29.6.2",
+    "eslint": "^8.45.0"
+  },
+  "keywords": [
+    "inventory",
+    "management",
+    "instituto",
+    "almacen",
+    "supabase",
+    "nodejs"
+  ],
+  "author": "Cristhian - Equipo Instituto",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
