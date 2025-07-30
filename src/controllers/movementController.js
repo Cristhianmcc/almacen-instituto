@@ -109,6 +109,17 @@ class MovementController {
 
       if (updateError) throw updateError;
 
+      // Si el stock sube por encima del umbral, resolver alertas pendientes
+      const lowStockThreshold = parseInt(process.env.LOW_STOCK_THRESHOLD) || 10;
+      if (stockAnterior <= lowStockThreshold && stockNuevo > lowStockThreshold) {
+        await supabase
+          .from('alertas')
+          .update({ estado_alerta: 'resuelta', fecha_resolucion: getCurrentDate() })
+          .eq('producto_id', producto_id)
+          .eq('tipo_alerta', 'bajo_stock')
+          .eq('estado_alerta', 'pendiente');
+      }
+
       // Registrar movimiento
       const { data, error } = await supabase
         .from('movimientos')
@@ -175,6 +186,8 @@ class MovementController {
         .eq('id', producto_id);
 
       if (updateError) throw updateError;
+
+      
 
       // Registrar movimiento
       const { data, error } = await supabase
@@ -296,10 +309,23 @@ class MovementController {
   }
 
   /**
-   * Generar alerta de stock bajo
+   * Generar alerta de stock bajo (solo si no existe una pendiente)
    */
   async generateLowStockAlert(productId, currentStock) {
     try {
+      // Verificar si ya existe una alerta pendiente para este producto
+      const { data: existing, error: findError } = await supabase
+        .from('alertas')
+        .select('*')
+        .eq('producto_id', productId)
+        .eq('tipo_alerta', 'bajo_stock')
+        .eq('estado_alerta', 'pendiente')
+        .maybeSingle();
+
+      if (findError) throw findError;
+      if (existing) return; // Ya existe una alerta pendiente
+
+      // Crear nueva alerta
       const { data, error } = await supabase
         .from('alertas')
         .insert([{
@@ -319,4 +345,4 @@ class MovementController {
   }
 }
 
-module.exports = new MovementController();
+module.exports = MovementController;
