@@ -5,6 +5,45 @@ const { getCurrentDate } = require('../utils/dateUtils');
 
 class WithdrawalController {
   /**
+   * Editar/actualizar una baja
+   */
+  async updateWithdrawal(req, res) {
+    try {
+      const { id } = req.params;
+      const { cantidad, observaciones } = req.body;
+
+      // Construir objeto de actualización solo con los campos enviados
+      const updateFields = {};
+      if (cantidad !== undefined) updateFields.cantidad = cantidad;
+      if (observaciones !== undefined) updateFields.observaciones = observaciones;
+      updateFields.updated_at = getCurrentDate();
+
+      const { data, error } = await supabase
+        .from('bajas')
+        .update(updateFields)
+        .eq('id', id)
+        .select(`
+          *,
+          productos (
+            codigo_item,
+            nombre_item,
+            nombre_marca
+          )
+        `)
+        .single();
+
+      if (error && error.code === 'PGRST116') {
+        return res.status(404).json(notFoundResponse('Baja', id));
+      }
+      if (error) throw error;
+
+      res.json(successResponse(data, 'Baja actualizada exitosamente'));
+    } catch (error) {
+      console.error('Error al actualizar baja:', error);
+      res.status(500).json(errorResponse('Error al actualizar baja', error.message));
+    }
+  }
+  /**
    * Obtener todas las bajas
    */
   async getAllWithdrawals(req, res) {

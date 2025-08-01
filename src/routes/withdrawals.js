@@ -12,7 +12,11 @@ router.get('/stats', withdrawalController.getWithdrawalStats);
 // GET /api/withdrawals/products - Obtener productos dados de baja
 router.get('/products', withdrawalController.getWithdrawnProducts);
 
+
 // POST /api/withdrawals - Registrar nueva baja
 router.post('/', validationMiddleware(withdrawalSchema), withdrawalController.createWithdrawal);
+
+// PATCH /api/withdrawals/:id - Editar una baja existente
+router.patch('/:id', withdrawalController.updateWithdrawal);
 
 module.exports = router;
