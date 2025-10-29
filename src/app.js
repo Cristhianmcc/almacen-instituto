@@ -16,29 +16,71 @@ console.log('🌐 Puerto:', process.env.PORT || 3003);
 const app = express();
 const PORT = process.env.PORT || 3003;
 
-// Configuración de CORS
+// Configuración de CORS mejorada
+const allowedOrigins = [
+  'https://lurinalmacen.onrender.com', // Tu frontend en producción
+  'http://localhost:3000',
+  'http://localhost:3002',
+  'http://localhost:5173',
+  'http://localhost:8080'
+];
+
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://lurinalmacen.onrender.com'] 
-    : ['http://localhost:3000', 'http://localhost:3002', 'http://localhost:8080'],
+  origin: function (origin, callback) {
+    console.log('🔍 Origen de la petición:', origin);
+    
+    // Permitir requests sin origin (Postman, curl, apps móviles)
+    if (!origin) {
+      console.log('✅ Permitido: Sin origen (Postman/curl)');
+      return callback(null, true);
+    }
+    
+    if (allowedOrigins.includes(origin)) {
+      console.log('✅ Origen permitido:', origin);
+      callback(null, true);
+    } else {
+      console.log('❌ Origen bloqueado:', origin);
+      callback(new Error(`Origen no permitido por CORS: ${origin}`));
+    }
+  },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  exposedHeaders: ['Content-Range', 'X-Content-Range'],
+  maxAge: 600,
+  optionsSuccessStatus: 204
 };
 
-// Middleware de seguridad
+// Middleware de seguridad - MODIFICADO PARA PRODUCCIÓN
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "https:"],
-    },
-  },
+  contentSecurityPolicy: false, // Desactivar en producción
+  crossOriginResourcePolicy: { policy: "cross-origin" },
+  crossOriginEmbedderPolicy: false
 }));
 
 app.use(cors(corsOptions));
+
+// Middleware adicional para manejar preflight requests
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  }
+  
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  
+  // Manejar preflight
+  if (req.method === 'OPTIONS') {
+    console.log('✅ Preflight request manejado');
+    return res.status(204).end();
+  }
+  
+  next();
+});
+
 app.use(morgan('combined'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -211,6 +253,7 @@ app.listen(PORT, () => {
   console.log(`🔍 Health check: http://localhost:${PORT}/api/health`);
   console.log(`📋 Documentación: http://localhost:${PORT}/api/info`);
   console.log(`🔔 Alertas automáticas: ${process.env.ALERT_CRON_SCHEDULE || '8:00 AM diario'}`);
+  console.log(`🌐 CORS habilitado para: ${allowedOrigins.join(', ')}`);
   console.log('===============================================');
 });
 
