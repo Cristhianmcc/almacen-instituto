@@ -1,4 +1,4 @@
-const express = require('express');
+﻿const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
@@ -8,17 +8,17 @@ const path = require('path');
 // Configurar variables de entorno al inicio
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
-console.log('🚀 Iniciando sistema de almacén - v1.0.2...');
-console.log('📍 Directorio de trabajo:', __dirname);
-console.log('🔧 NODE_ENV:', process.env.NODE_ENV || 'development');
-console.log('🌐 Puerto:', process.env.PORT || 3003);
+console.log('ðŸš€ Iniciando sistema de almacÃ©n - v1.0.2...');
+console.log('ðŸ“ Directorio de trabajo:', __dirname);
+console.log('ðŸ”§ NODE_ENV:', process.env.NODE_ENV || 'development');
+console.log('ðŸŒ Puerto:', process.env.PORT || 3003);
 
 const app = express();
 const PORT = process.env.PORT || 3003;
 
-// Configuración de CORS mejorada
+// ConfiguraciÃ³n de CORS mejorada
 const allowedOrigins = [
-  'https://lurinalmacen.onrender.com', // Tu frontend en producción
+  'https://lurinalmacen.onrender.com', // Tu frontend en producciÃ³n
   'http://localhost:3000',
   'http://localhost:3002',
   'http://localhost:5173',
@@ -27,19 +27,19 @@ const allowedOrigins = [
 
 const corsOptions = {
   origin: function (origin, callback) {
-    console.log('🔍 Origen de la petición:', origin);
+    console.log('ðŸ” Origen de la peticiÃ³n:', origin);
     
-    // Permitir requests sin origin (Postman, curl, apps móviles)
+    // Permitir requests sin origin (Postman, curl, apps mÃ³viles)
     if (!origin) {
-      console.log('✅ Permitido: Sin origen (Postman/curl)');
+      console.log('âœ… Permitido: Sin origen (Postman/curl)');
       return callback(null, true);
     }
     
     if (allowedOrigins.includes(origin)) {
-      console.log('✅ Origen permitido:', origin);
+      console.log('âœ… Origen permitido:', origin);
       callback(null, true);
     } else {
-      console.log('❌ Origen bloqueado:', origin);
+      console.log('âŒ Origen bloqueado:', origin);
       callback(new Error(`Origen no permitido por CORS: ${origin}`));
     }
   },
@@ -51,9 +51,9 @@ const corsOptions = {
   optionsSuccessStatus: 204
 };
 
-// Middleware de seguridad - MODIFICADO PARA PRODUCCIÓN
+// Middleware de seguridad - MODIFICADO PARA PRODUCCIÃ“N
 app.use(helmet({
-  contentSecurityPolicy: false, // Desactivar en producción
+  contentSecurityPolicy: false, // Desactivar en producciÃ³n
   crossOriginResourcePolicy: { policy: "cross-origin" },
   crossOriginEmbedderPolicy: false
 }));
@@ -74,7 +74,7 @@ app.use((req, res, next) => {
   
   // Manejar preflight
   if (req.method === 'OPTIONS') {
-    console.log('✅ Preflight request manejado');
+    console.log('âœ… Preflight request manejado');
     return res.status(204).end();
   }
   
@@ -91,14 +91,14 @@ app.use((req, res, next) => {
   next();
 });
 
-// Ruta de salud básica (sin dependencias)
+// Ruta de salud bÃ¡sica (sin dependencias)
 app.get('/api/health', (req, res) => {
   const uptime = process.uptime();
   const memoryUsage = process.memoryUsage();
   
   res.json({
     success: true,
-    message: 'Sistema de control de almacén funcionando correctamente',
+    message: 'Sistema de control de almacÃ©n funcionando correctamente',
     data: {
       uptime: `${Math.floor(uptime / 60)} minutos`,
       memory: {
@@ -112,7 +112,7 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Información del sistema
+// InformaciÃ³n del sistema
 app.get('/api/info', (req, res) => {
   res.json({
     success: true,
@@ -123,9 +123,9 @@ app.get('/api/info', (req, res) => {
       features: [
         'Control de inventario en tiempo real',
         'Sistema FIFO (PEPS)',
-        'Alertas automáticas',
-        'Gestión de bajas y sobrantes',
-        'Integración con SIGA',
+        'Alertas automÃ¡ticas',
+        'GestiÃ³n de bajas y sobrantes',
+        'IntegraciÃ³n con SIGA',
         'Reportes detallados'
       ],
       environment: process.env.NODE_ENV || 'development'
@@ -133,7 +133,7 @@ app.get('/api/info', (req, res) => {
   });
 });
 
-// Importar rutas después de configurar las variables de entorno
+// Importar rutas despuÃ©s de configurar las variables de entorno
 try {
   const productRoutes = require('./routes/products');
   const movementRoutes = require('./routes/movements');
@@ -141,6 +141,8 @@ try {
   const withdrawalRoutes = require('./routes/withdrawals');
   const surplusRoutes = require('./routes/surplus');
   const reportRoutes = require('./routes/reports');
+  const notificacionesRoutes = require('./routes/notificaciones');
+  
 
   // Usar las rutas
   app.use('/api/products', productRoutes);
@@ -149,28 +151,33 @@ try {
   app.use('/api/withdrawals', withdrawalRoutes);
   app.use('/api/surplus', surplusRoutes);
   app.use('/api/reports', reportRoutes);
+  app.use('/api/notificaciones', notificacionesRoutes);
 
-  console.log('✅ Rutas cargadas exitosamente');
+  console.log('âœ… Rutas cargadas exitosamente');
+
+  // Inicializar servicio de alertas automáticas
+  const alertasService = require('./services/alertasService');
+  alertasService.init();
 } catch (error) {
-  console.error('❌ Error al cargar las rutas:', error.message);
-  console.error('🔧 Verifica que las variables de entorno estén configuradas correctamente');
-  console.error('📋 Asegúrate de ejecutar el script SQL en Supabase');
+  console.error('âŒ Error al cargar las rutas:', error.message);
+  console.error('ðŸ”§ Verifica que las variables de entorno estÃ©n configuradas correctamente');
+  console.error('ðŸ“‹ AsegÃºrate de ejecutar el script SQL en Supabase');
 }
 
-// Importar servicios después de verificar la conexión
+// Importar servicios despuÃ©s de verificar la conexiÃ³n
 try {
   const alertService = require('./services/alertService');
   
-  // Configurar cron job para alertas automáticas
+  // Configurar cron job para alertas automÃ¡ticas
   const alertCron = new cron.CronJob(
-    process.env.ALERT_CRON_SCHEDULE || '0 8 * * *', // Todos los días a las 8 AM
+    process.env.ALERT_CRON_SCHEDULE || '0 8 * * *', // Todos los dÃ­as a las 8 AM
     async () => {
-      console.log('🔔 Ejecutando verificación automática de alertas...');
+      console.log('ðŸ”” Ejecutando verificaciÃ³n automÃ¡tica de alertas...');
       try {
         await alertService.generateAutomaticAlerts();
-        console.log('✅ Alertas automáticas generadas exitosamente');
+        console.log('âœ… Alertas automÃ¡ticas generadas exitosamente');
       } catch (error) {
-        console.error('❌ Error al generar alertas automáticas:', error);
+        console.error('âŒ Error al generar alertas automÃ¡ticas:', error);
       }
     },
     null, // onComplete
@@ -178,32 +185,32 @@ try {
     'America/Lima' // timeZone
   );
 
-  console.log('⏰ Cron job de alertas configurado');
+  console.log('â° Cron job de alertas configurado');
 } catch (error) {
-  console.error('❌ Error al configurar alertas automáticas:', error.message);
+  console.error('âŒ Error al configurar alertas automÃ¡ticas:', error.message);
 }
 
 // Middleware para manejo de errores
 app.use((err, req, res, next) => {
   const duration = Date.now() - req.startTime;
   
-  console.error(`❌ Error en ${req.method} ${req.originalUrl} - ${duration}ms:`, err.stack);
+  console.error(`âŒ Error en ${req.method} ${req.originalUrl} - ${duration}ms:`, err.stack);
   
-  // Error de validación
+  // Error de validaciÃ³n
   if (err.name === 'ValidationError') {
     return res.status(400).json({
       success: false,
-      error: 'Error de validación',
+      error: 'Error de validaciÃ³n',
       details: err.message
     });
   }
   
-  // Error de autorización
+  // Error de autorizaciÃ³n
   if (err.name === 'UnauthorizedError') {
     return res.status(401).json({
       success: false,
       error: 'No autorizado',
-      message: 'Token de acceso inválido o expirado'
+      message: 'Token de acceso invÃ¡lido o expirado'
     });
   }
   
@@ -211,7 +218,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({
     success: false,
     error: 'Error interno del servidor',
-    message: process.env.NODE_ENV === 'development' ? err.message : 'Algo salió mal',
+    message: process.env.NODE_ENV === 'development' ? err.message : 'Algo saliÃ³ mal',
     timestamp: new Date().toISOString()
   });
 });
@@ -235,25 +242,26 @@ app.use('*', (req, res) => {
 
 // Manejo de cierre graceful
 process.on('SIGTERM', () => {
-  console.log('🔄 Recibida señal SIGTERM, cerrando servidor...');
+  console.log('ðŸ”„ Recibida seÃ±al SIGTERM, cerrando servidor...');
   process.exit(0);
 });
 
 process.on('SIGINT', () => {
-  console.log('🔄 Recibida señal SIGINT, cerrando servidor...');
+  console.log('ðŸ”„ Recibida seÃ±al SIGINT, cerrando servidor...');
   process.exit(0);
 });
 
+
 // Iniciar servidor
 app.listen(PORT, () => {
-  console.log('🚀 ==============================================');
-  console.log(`📦 Sistema de Control de Almacén - Instituto`);
-  console.log(`🌐 Servidor corriendo en puerto ${PORT}`);
-  console.log(`📊 Panel disponible en http://localhost:${PORT}`);
-  console.log(`🔍 Health check: http://localhost:${PORT}/api/health`);
-  console.log(`📋 Documentación: http://localhost:${PORT}/api/info`);
-  console.log(`🔔 Alertas automáticas: ${process.env.ALERT_CRON_SCHEDULE || '8:00 AM diario'}`);
-  console.log(`🌐 CORS habilitado para: ${allowedOrigins.join(', ')}`);
+  console.log('ðŸš€ ==============================================');
+  console.log(`ðŸ“¦ Sistema de Control de AlmacÃ©n - Instituto`);
+  console.log(`ðŸŒ Servidor corriendo en puerto ${PORT}`);
+  console.log(`ðŸ“Š Panel disponible en http://localhost:${PORT}`);
+  console.log(`ðŸ” Health check: http://localhost:${PORT}/api/health`);
+  console.log(`ðŸ“‹ DocumentaciÃ³n: http://localhost:${PORT}/api/info`);
+  console.log(`ðŸ”” Alertas automÃ¡ticas: ${process.env.ALERT_CRON_SCHEDULE || '8:00 AM diario'}`);
+  console.log(`ðŸŒ CORS habilitado para: ${allowedOrigins.join(', ')}`);
   console.log('===============================================');
 });
 

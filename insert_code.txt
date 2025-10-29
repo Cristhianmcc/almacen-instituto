@@ -1,0 +1,4 @@
+﻿
+  // Inicializar servicio de alertas automáticas
+  const alertasService = require('./services/alertasService');
+  alertasService.init();

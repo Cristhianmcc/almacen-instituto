@@ -1,6 +1,7 @@
 const { supabase } = require('../services/supabaseClient');
 const { successResponse, errorResponse, notFoundResponse } = require('../utils/responseUtils');
 const { getCurrentDate } = require('../utils/dateUtils');
+const alertasService = require('../services/alertasService');
 
 class MovementController {
   /**
@@ -138,6 +139,11 @@ class MovementController {
 
       if (error) throw error;
 
+      // Verificar alertas inmediatamente después de la entrada
+      console.log(' LLAMANDO verificarAlertasInmediatas para producto:', producto_id);
+      await alertasService.verificarAlertasInmediatas(producto_id);
+      console.log(' verificarAlertasInmediatas completado');
+
       res.status(201).json(successResponse(data, 'Entrada registrada exitosamente'));
 
     } catch (error) {
@@ -212,6 +218,11 @@ class MovementController {
       if (stockNuevo <= lowStockThreshold) {
         await this.generateLowStockAlert(producto_id, stockNuevo);
       }
+
+      // Verificar alertas inmediatamente después de la salida
+      console.log(' LLAMANDO verificarAlertasInmediatas para producto:', producto_id);
+      await alertasService.verificarAlertasInmediatas(producto_id);
+      console.log(' verificarAlertasInmediatas completado');
 
       res.status(201).json(successResponse(data, 'Salida registrada exitosamente'));
 
@@ -346,3 +357,4 @@ class MovementController {
 }
 
 module.exports = MovementController;
+
